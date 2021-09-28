@@ -42,16 +42,19 @@ void simpleHighway(pcl::visualization::PCLVisualizer::Ptr& viewer)
     // ----------------------------------------------------
     
     // RENDER OPTIONS
-    bool renderScene = true;
+    bool renderScene = false;
     std::vector<Car> cars = initHighway(renderScene, viewer);
     
     // TODO:: Create lidar sensor have to
     Lidar* lidar = new Lidar(cars, 0);
     pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloud = lidar->scan();
-    renderRays(viewer, lidar->position, inputCloud);
-    //renderPointCloud(viewer, inputCloud, "inputCloud");
-    // TODO:: Create point processor
+    //renderRays(viewer, lidar->position, inputCloud);
+    renderPointCloud(viewer, inputCloud, "inputCloud");
+    // TODO:: Create point processor (using stack)
     ProcessPointClouds<pcl::PointXYZ> pointProcessor;
+    std::pair<pcl::PointCloud<pcl::PointXYZ>::Ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr> segmentCloud = pointProcessor.SegmentPlane(inputCloud, 100, 0.2);
+    renderPointCloud(viewer, segmentCloud.first, "obstCloud",Color(1,0,0)); //red
+    renderPointCloud(viewer, segmentCloud.second, "planeCloud", Color(0,1,0)); //green
   
 }
 
@@ -77,6 +80,16 @@ void initCamera(CameraAngle setAngle, pcl::visualization::PCLVisualizer::Ptr& vi
 
     if(setAngle!=FPS)
         viewer->addCoordinateSystem (1.0);
+
+    // Create point cloud proccesor (using heap)
+    //ProcessPointClouds<pcl::PointXYZ>* pointProcessor = new ProcessPointClouds<pcl::PointXYZ>();
+    //ProcessPointClouds<pcl::PointXYZI>* pointProcessorI = new ProcessPointClouds<pcl::PointXYZI>();
+
+    //std::vector<boost::filesystem::path> stream = pointProcessorI ->streamPcd("../src/sensros/data/pcd/")
+    //auto streamIterator = stream.begin();
+
+    //pcl::PointColud<pcl::PointXYZI>::Ptr inputCloudI;
+    //pcl::PointCloud<pcl::PointXYZ>::Ptr inputCloud;
 }
 
 
