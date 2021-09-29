@@ -17,4 +17,4 @@ In this course we will be talking about sensor fusion, whch is the process of ta
 
 + Ubuntu 16.04
 + PCL v1.7.2
-+ C++ v1.6
++ C++ v11
